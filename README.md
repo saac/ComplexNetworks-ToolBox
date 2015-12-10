@@ -10,11 +10,10 @@ Please, if you use quotes the author.
 
 ============================================================================================
 
-Net
+Net2Infomap7.1.py and NetXAnalyzer.py takes a SIF-like file and returns a Pajek-like file (.net) input to INFOMAP (for communiy analysis)
 
-
-For communiy analysis please visit:
-<http://www.mapequation.org/apps/MapGenerator.html>
+For INFOMAP's communiy analysis please visit:
+<http://www.mapequation.org/apps/>
 
 
 
