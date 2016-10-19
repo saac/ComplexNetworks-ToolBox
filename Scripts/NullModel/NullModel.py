@@ -1,6 +1,5 @@
 
 import sys
-
 import itertools
 import random
 import math
@@ -33,6 +32,7 @@ def gnp_random_graph(p, diccionario, m, directed=False):
   return G
 
 ##------------------------------------------------------------------------------------------------------------------------------------------##
+
 
 def gnp_random_graph2(diccionario, m, directed=False):
 
@@ -68,17 +68,54 @@ def gnp_random_graph2(diccionario, m, directed=False):
   return G
   
  
+##------------------------------------------------------------------------------------------------------------------------------------------##
+
+ 
+
+
+def gnp_random_graph3(diccionario, m, directed=False):
+
+  if directed:
+      G=nx.DiGraph()
+  else:
+      G=nx.Graph()
+      
+  G.add_nodes_from(diccionario) 
+  n = G.number_of_nodes()
+ 
+  #p = float(float(n)/float(m))
+  p = 2*float(m)/float(n*(n-1))
+
+
+  if p<=0:
+      return G
+  if p>=1:
+      return nx.complete_graph(n,create_using=G)
+  
+  #random.seed(seed)
+  
+  if G.is_directed():
+      edges=itertools.permutations(range(n),2)
+  else:
+      edges=itertools.combinations(range(n),2)
+
+  for a,b in edges:
+      u=diccionario.keys()[diccionario.values().index(a+1)]
+      v=diccionario.keys()[diccionario.values().index(b+1)]
+      if random.random() < p:
+          G.add_edge(u,v)
+
+  return G
+
+
+ 
 ##############################################################################################################################
  
 red = sys.argv[1]
 sep = sys.argv[2]
 form = sys.argv[3]
 
-m0 = sys.argv[4]
-#p0 = sys.argv[5]
-
-#m0 = 0
-
+tipo = sys.argv[4]
 
 diccionario = {}
 genesDIC = []
@@ -106,6 +143,8 @@ k = 0
 tmp="---"
 for i in interacciones:
     genes  = i.split(sep)
+    
+    #print genes
 
     a=genes[0].strip()
     b=genes[1].strip()
@@ -133,8 +172,19 @@ for n in genesDIC:
     i+=1
 
 
-#G = gnp_random_graph(0.5,diccionario,m0)
-G = gnp_random_graph2(diccionario,m0)
+if (tipo == '1'):
+    p=float(raw_input("p enlace = "))
+    m0=float(raw_input("aristas m = "))
+    G = gnp_random_graph(p,diccionario,m0)
+elif(tipo == '2'):
+    m0=float(raw_input("aristas m = "))
+    G = gnp_random_graph2(diccionario,m0)
+elif(tipo == '3'):
+    m0 = len(interacciones)
+    G = gnp_random_graph3(diccionario,m0)
+    
+
+
 
 output2 = name[0]+'_NullModel.sif'
 SIF = open(output2,"w")
@@ -155,7 +205,7 @@ SALIDA.close()
 #SIF.write("------\n")
 
 if not nx.is_connected(G):
-  print nx.number_connected_components(G)
+  print "Componentes = ",nx.number_connected_components(G)
   for g in nx.connected_components(G):
     #print g
     if len(g) <= 2:
