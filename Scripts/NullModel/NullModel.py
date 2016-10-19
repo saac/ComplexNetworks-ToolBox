@@ -32,6 +32,7 @@ def gnp_random_graph(p, diccionario, m, directed=False):
 
   return G
 
+##------------------------------------------------------------------------------------------------------------------------------------------##
 
 def gnp_random_graph2(diccionario, m, directed=False):
 
@@ -43,7 +44,10 @@ def gnp_random_graph2(diccionario, m, directed=False):
   G.add_nodes_from(diccionario)  
   n = G.number_of_nodes()
   
-  p = float(float(n)/float(m))
+  #p = float(float(n)/float(m))
+  p = 2*float(m)/float(n*(n-1))
+  
+
 
   if p<=0:
       return G
@@ -63,7 +67,9 @@ def gnp_random_graph2(diccionario, m, directed=False):
 
   return G
   
-  
+ 
+##############################################################################################################################
+ 
 red = sys.argv[1]
 sep = sys.argv[2]
 form = sys.argv[3]
@@ -112,7 +118,7 @@ for i in interacciones:
       if (genes[2].strip() not in genesDIC): genesDIC.append(genes[2].strip())
 
       
-    elif (sep == "nnI"):
+    elif (form == "nnI"):
       
       if (genes[0].strip() not in genesDIC): genesDIC.append(genes[0].strip())
       if (genes[1].strip() not in genesDIC): genesDIC.append(genes[1].strip())
